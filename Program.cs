@@ -82,7 +82,9 @@ namespace apiviewer
                 var assembly = Assembly.LoadFile(path);
                 var types = assembly.GetTypes().Where(t => 
                         !t.IsDefined(typeof(CompilerGeneratedAttribute), false) &&
-                        !t.IsEnum);
+                        !t.IsEnum &&
+                        !t.IsInterface &&
+                        !t.IsSubclassOf(typeof(Delegate)));
 
                 foreach (Type type in types)
                 {
