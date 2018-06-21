@@ -87,21 +87,18 @@ namespace apiviewer
                 foreach (Type type in types)
                 {
                     string typeName = type.Name;
-                    //Console.WriteLine($"# {typeName} : {type.BaseType}");
                     var t = new API(Category.Type, typeName);
                     apis.Add(t);
 
                     var staticFieldsInfo = type.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly);
                     foreach (var field in staticFieldsInfo)
                     {
-                        //Console.WriteLine($"  - {field.FieldType.Name} {typeName}.{field.Name}");
                         apis.Add(new API(t, Category.StaticField, field.Name, field.FieldType.Name));
                     }
 
                     var propertyInfo = type.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
                     foreach (var property in propertyInfo)
                     {
-                        //Console.WriteLine($"  - {property.PropertyType.Name} {typeName}.{property.Name}");
                         apis.Add(new API(t, Category.Property, property.Name, property.PropertyType.Name));
                     }
 
@@ -121,7 +118,6 @@ namespace apiviewer
                             psb.Append(p.Name);
                             psb.Append(' ');
                         }
-                        //Console.WriteLine($"  - {method.ReturnType.Name} {typeName}.{method.Name}({psb.ToString()})");
 
                         apis.Add(new API(t, Category.Method, $"{method.Name}({psb.ToString()})", method.ReturnType.Name));
                     }
@@ -129,10 +125,8 @@ namespace apiviewer
                     var fieldsInfo = type.GetFields(BindingFlags.Public | BindingFlags.DeclaredOnly);
                     foreach (var field in fieldsInfo)
                     {
-                        //Console.WriteLine($"  - {field.FieldType.Name} {typeName}.{field.Name}");
                         apis.Add(new API(t, Category.Field, field.Name, field.FieldType.Name));
                     }
-
                 }
 			}
 			catch (ReflectionTypeLoadException ex)
@@ -247,6 +241,16 @@ namespace apiviewer
                     Console.WriteLine();
                 }
             }
+
+            PrintHowToMakeIt();
+        }
+
+        static void PrintHowToMakeIt()
+        {
+            Console.WriteLine();
+            Console.WriteLine("----");
+            Console.WriteLine();
+            Console.WriteLine("This document is created with [TCTGen](https://github.com/idkiller/TCTGen.git)");
         }
 	}
 }
