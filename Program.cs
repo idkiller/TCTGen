@@ -30,7 +30,6 @@ namespace apiviewer
 
         public API Parent {get; set;}
 
-        [Printable(1)]
         public string DeclaredType {get; set;}
         [Printable(2)]
         public Category Category {get; set;}
