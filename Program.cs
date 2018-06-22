@@ -21,7 +21,7 @@ namespace apiviewer
 
     enum Category
     {
-        None, Type, Property, StaticField, Method, Field
+        None, Type, Property, StaticField, Method, Field, Event
     }
 
     class API
@@ -123,10 +123,16 @@ namespace apiviewer
                         apis.Add(new API(t, Category.Method, $"{method.Name}({psb.ToString()})", method.ReturnType.Name));
                     }
 
-                    var fieldsInfo = type.GetFields(BindingFlags.Public | BindingFlags.DeclaredOnly);
+                    var fieldsInfo = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
                     foreach (var field in fieldsInfo)
                     {
                         apis.Add(new API(t, Category.Field, field.Name, field.FieldType.Name));
+                    }
+
+                    var eventsInfo = type.GetEvents(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                    foreach (var evnt in eventsInfo)
+                    {
+                        apis.Add(new API(t, Category.Event, evnt.Name, evnt.EventHandlerType.Name));
                     }
                 }
 			}
